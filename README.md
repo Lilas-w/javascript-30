@@ -6,3 +6,4 @@
 
 [03 - CSS Variables](https://lilas-w.github.io/javascript-30/03%20-%20CSS%20Variables/index.html)
 
+[04 - Array Cardio Day 1](https://lilas-w.github.io/javascript-30/04%20-%20Array%20Cardio%20Day%201/index.html)
