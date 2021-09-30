@@ -8,36 +8,39 @@
     <canvas id="draw" width="800" height="800"></canvas>
     <script>
       const canvas = document.querySelector("#draw");
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext("2d"); //申请一个绘制2d动画的环境
       canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      ctx.strokeStyle = "#BADA55";
-      ctx.lineJoin = "round";
-      ctx.lineCap = "round";
-      ctx.lineWidth = 100;
+      canvas.height = window.innerHeight; //画布宽度和高度设置为整个窗口的宽度和高度
+      ctx.strokeStyle = "#BADA55"; //线条颜色
+      ctx.lineJoin = "round"; //线条连接样式，转角
+      ctx.lineCap = "round"; //线条结束样式
+      ctx.lineWidth = 100; //线条宽度
       // ctx.globalCompositeOperation = "multiply";
 
-      let isDrawing = false;
+      let isDrawing = false; //判断是否在画图
       let lastX = 0;
       let lastY = 0;
-      let hue = 0;
-      let direction = true;
+      let hue = 0; //色相值，在hsl中使用
+      let direction = true; //判断粗细增减用的布尔值
 
+      //执行画图
       function draw(e) {
-        if (!isDrawing) return;
-        console.log(e);
-        ctx.strokeStyle = `hsl(${hue},100%,50%)`;
+        if (!isDrawing) return; //不在画图则return
+        // console.log(e);
+        ctx.strokeStyle = `hsl(${hue},100%,50%)`; //设定线条颜色为hsl模式，接收变量hue
         // ctx.lineWidth = hue;
-        ctx.beginPath();
-        ctx.moveTo(lastX, lastY);
-        ctx.lineTo(e.offsetX, e.offsetY);
-        ctx.stroke();
-        [lastX, lastY] = [e.offsetX, e.offsetY];
+        ctx.beginPath(); //起始画图路径
+        ctx.moveTo(lastX, lastY); //将路径指针移动到X、Y点
+        ctx.lineTo(e.offsetX, e.offsetY); //将起始点与目前鼠标位置的X、Y用线条连起来
+        ctx.stroke(); //将线条绘制出来
+        [lastX, lastY] = [e.offsetX, e.offsetY]; //将结束点放入目前鼠标位置X、Y中
 
+        //颜色变化效果，色相值超过360后归零
         hue++;
         if (hue >= 360) {
           hue = 0;
         }
+        //线条粗细变化效果，当宽度达到指定值，切换direction的true/false
         if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
           direction = !direction;
         }
@@ -47,13 +50,15 @@
           ctx.lineWidth--;
         }
       }
-
+      //设定鼠标点击的监听事件，将当前鼠标位置设定为上一个路径位置的X、Y，设定正在绘画
       canvas.addEventListener("mousedown", (e) => {
         isDrawing = true;
         [lastX, lastY] = [e.offsetX, e.offsetY];
       });
 
+      //鼠标移动时执行draw函数
       canvas.addEventListener("mousemove", draw);
+      //鼠标放开、离开时，不触发draw函数
       canvas.addEventListener("mouseup", () => (isDrawing = false));
       canvas.addEventListener("mouseout", () => (isDrawing = false));
     </script>
